@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: ac4af691f9576fc44a75b9478f7a77db
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - Guardsman1: {fileID: 758263232041104409, guid: 10ac31f380045854bbf7b9dffe29e191, type: 3}
+  - RagingTiger1: {fileID: 7085775153211423181, guid: fb601b379e9c1db47b53b12e5974205a, type: 3}
+  - DivineGeneral1: {fileID: 1384284493415359499, guid: a4c18dcb3d4205843ab338be522b8dee, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

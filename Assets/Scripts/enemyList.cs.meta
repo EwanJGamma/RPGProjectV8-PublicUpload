@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: c7ef1b8c7f6a68846a95f50d355081e7
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - guardsmanCombatPrefab: {fileID: 4192911273658218032, guid: 2414a1b2009ee064c9622e74c666db02, type: 3}
+  - ragingTigerPrefab: {fileID: 8734977165238489466, guid: 016586e395081ab40bad857060d67b69, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
