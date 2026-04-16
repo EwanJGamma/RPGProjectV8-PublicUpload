@@ -14,6 +14,9 @@ public class Unit : MonoBehaviour
     public int guardCost;
     public int ragingClawDamage;
     public int roarSpiritDamage;
+    public int twinBladeDamage;
+    public int bloodSpearDamage;
+    public int angelPiercerDamage;
     public int maxHP;
     public int maxSP;
 

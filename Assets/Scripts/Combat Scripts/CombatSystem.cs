@@ -29,6 +29,8 @@ public class CombatSystem : MonoBehaviour
     public EnemyDestroyed enemyDestroyed;
     public EnemyHandler enemyHandler;
     public bool isLevel25;
+    public bool isLevel50;
+    public int ranNum;
 
     //This sends the information of the combat stations to the script so we can always put the Player / Enemy in the right place.
     public Transform playerCombatStation;
@@ -50,7 +52,6 @@ public class CombatSystem : MonoBehaviour
         StartCoroutine(CombatSetup());
         //This makes the Combat system flow as turn based, Setting the state to combat start
     }
-
 
 
     IEnumerator CombatSetup()
@@ -152,69 +153,118 @@ public class CombatSystem : MonoBehaviour
             dialogueText.text = "The " + enemyUnit.unitName + "'s roar fills you with dread, sapping your spirit...";
             playerUnit.SPCost(enemyUnit.roarSpiritDamage);
             PlayerHUD.SetSP(playerUnit.SP);
-            
-            
+
+
         }
-
-        dialogueText.text = "The " + enemyUnit.unitName + " strikes...";
-
-        yield return new WaitForSeconds(2f);
-
-        //This checks if the Player is Guarding, Halves DMG taken if they are, and then applies the damage to the player.
-        
-        if (guard == false)
+        //This makes the Enemy do many things, first off it makes the Physical attack of the player & boss damage by 10, but boosts both of your holy abilities by larger increments
+        //It also makes the Boss have a chance to use one of 3 different attacks, 1 of which scales more, 1 which scales a little and 1 which is a gradually weakening physical attack
+        if (enemyUnit.unitName == "DivineGeneral")
         {
-            playerUnit.TDmg(enemyUnit.damage * 2);
-        }
-
-        bool isDead = playerUnit.TDmg(enemyUnit.damage);
-        PlayerHUD.SetHP(playerUnit.HP);
-
-        yield return new WaitForSeconds(2f);
-
-        if (isDead)
-        {
-            state = CombatState.DEFEAT;
-            EndCombat();
-        }
-
-        //This makes sure the player isnt accidentally kept  guarding across multiple turns.
-
-        else
-        {
-            guard = false;
-            state = CombatState.PTURN;
-            PTURN();
-        }
-
-    }
-
-    void EndCombat()
-    {
-        if (state == CombatState.VICTORY)
-        {
-            //Since the Player wins on his turn, the call of the Enemy to use up the Guard button isnt used, so we reset it here on victory incase the player wins by 
-            //Something such as Tick Damage or another character killing the enemy while the player's guarding. Preventing Guarding across battles.
-            //Updated to check which enemy was defeated and set the bool to correctly identify it in the Overworld.
-            guard = false;
-            
-            if (enemyUnit.unitName == "Guardsman")
+            dialogueText.text = "The " + enemyUnit.unitName + " chimes his bell";
+            yield return new WaitForSeconds(2f);
+            dialogueText.text = "The " + enemyUnit.unitName + "'s bell decreases physical and boosts holy damage";
+            playerUnit.damage = playerUnit.damage - 10;
+            enemyUnit.damage = enemyUnit.damage - 10;
+            playerUnit.mundareDamage = playerUnit.mundareDamage + 50;
+            enemyUnit.angelPiercerDamage = enemyUnit.angelPiercerDamage + 50;
+            enemyUnit.bloodSpearDamage = enemyUnit.bloodSpearDamage + 25;
+            if (enemyUnit.damage < 10)
             {
-                EnemyHandler.guardsman1 = true;
+                enemyUnit.damage = 10;
             }
-            if (enemyUnit.unitName == "RagingTiger")
+            yield return new WaitForSeconds(2f);
+            ranNum = Random.Range(1, 4);
+
             {
-                EnemyHandler.ragingtiger1 = true;
+                if (ranNum == 1)
+                {
+                    dialogueText.text = "The " + enemyUnit.unitName + " casts Angel Piercer!";
+                    yield return new WaitForSeconds(2f);
+                    playerUnit.TDmg(enemyUnit.angelPiercerDamage);
+                    PlayerHUD.SetHP(playerUnit.HP);
+                }
+                else if (ranNum == 2)
+                {
+                    dialogueText.text = "The " + enemyUnit.unitName + " casts Blood Spear!";
+                    yield return new WaitForSeconds(2f);
+                    playerUnit.TDmg(enemyUnit.bloodSpearDamage);
+                    PlayerHUD.SetHP(playerUnit.HP);
+                }           
+                else
+                { 
+                    dialogueText.text = "The " + enemyUnit.unitName + "thrusts with his Twinblades";
+                    yield return new WaitForSeconds(2f);
+                    playerUnit.TDmg(enemyUnit.damage);
+                    PlayerHUD.SetHP(playerUnit.HP);
+                }
+            }             
+        }
+    
+
+            dialogueText.text = "The " + enemyUnit.unitName + " strikes...";
+
+            yield return new WaitForSeconds(2f);
+
+            //This checks if the Player is Guarding, Halves DMG taken if they are, and then applies the damage to the player.
+
+            if (guard == false)
+            {
+                playerUnit.TDmg(enemyUnit.damage * 2);
             }
-                SceneManager.LoadScene(0);
+
+            bool isDead = playerUnit.TDmg(enemyUnit.damage);
+            PlayerHUD.SetHP(playerUnit.HP);
+
+            yield return new WaitForSeconds(2f);
+
+            if (isDead)
+            {
+                state = CombatState.DEFEAT;
+                EndCombat();
+            }
+
+            //This makes sure the player isnt accidentally kept  guarding across multiple turns.
+
+            else
+            {
+                guard = false;
+                state = CombatState.PTURN;
+                PTURN();
+            }
+
         }
-        else if (state == CombatState.DEFEAT)
+
+        void EndCombat()
         {
-            dialogueText.text = "You have been defeated by the " + enemyUnit.unitName + "...";
+            if (state == CombatState.VICTORY)
+            {
+                //Since the Player wins on his turn, the call of the Enemy to use up the Guard button isnt used, so we reset it here on victory incase the player wins by 
+                //Something such as Tick Damage or another character killing the enemy while the player's guarding. Preventing Guarding across battles.
+                //Updated to check which enemy was defeated and set the bool to correctly identify it in the Overworld.
+                guard = false;
+
+                if (enemyUnit.unitName == "Guardsman")
+                {
+                    EnemyHandler.guardsman1 = true;
+                }
+                if (enemyUnit.unitName == "RagingTiger")
+                {
+                    EnemyHandler.ragingtiger1 = true;
+                }
+                if (enemyUnit.unitName == "DivineGeneral")
+                {
+                    EnemyHandler.divinegeneral1 = true;
+                }
+            SceneManager.LoadScene(0);
+            }
+            else if (state == CombatState.DEFEAT)
+            {
+                dialogueText.text = "You have been defeated by the " + enemyUnit.unitName + "...";
 
 
+            }
         }
-    }
+    
 
 
     public void OnAttackButton()

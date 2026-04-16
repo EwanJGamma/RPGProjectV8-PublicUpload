@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2590317645781722518}
   - component: {fileID: 5723873218671296512}
   m_Layer: 0
-  m_Name: enemyCombatPrefab 1
+  m_Name: divineCombatPrefab
   m_TagString: EnemyCombat
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 1, g: 0.3764706, b: 0.13725491, a: 1}
+  m_Color: {r: 1, g: 0, b: 0.0766139, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -105,19 +105,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a756a7a27fce57478127f7eea2684e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitName: RagingTiger
-  unitThreat: 2
-  damage: 45
+  unitName: DivineGeneral
+  unitThreat: 3
+  damage: 50
+  recovery: 0
   slashDamage: 0
   slashCost: 0
   mundareDamage: 0
   mundareCost: 0
   guardCost: 0
-  ragingClawDamage: 50
-  roarSpiritDamage: 25
-  maxHP: 100
-  maxSP: 0
-  HP: 500
+  ragingClawDamage: 0
+  roarSpiritDamage: 0
+  twinBladeDamage: 150
+  bloodSpearDamage: 50
+  angelPiercerDamage: 100
+  maxHP: 1500
+  maxSP: 500
+  HP: 1500
   SP: 0
 --- !u!1 &343168216850922231
 GameObject:
